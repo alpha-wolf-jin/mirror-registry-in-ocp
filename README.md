@@ -22,6 +22,23 @@ git push -u origin main
 git add . ; git commit -a -m "update README" ; git push -u origin main
 ```
 
+## Prepare the images
+
+```
+[lab-user@bastion registry]$ podman pull docker.io/library/registry:2.7.1
+
+[lab-user@bastion registry]$ oc whoami --show-server
+https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
+
+[lab-user@bastion registry]$ oc login -u opentlc-mgr https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
+
+[lab-user@bastion registry]$ podman login -u opentlc-mgr -p $(oc whoami --show-token) default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com
+
+[lab-user@bastion registry]$ podman tag b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+
+[lab-user@bastion registry]$ podman push b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+
+```
 # Create docker registry
 
 >Note: below hostanme has to changed  accordingly when using differnt names
@@ -155,5 +172,52 @@ docker-registry   docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.c
 
 [lab-user@bastion registry]$ curl -u admin:redhat123 https://docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/v2/_catalog
 {"repositories":[]}
+
+```
+
+
+
+
+## Prepare the images for disconnection environment
+
+**Prepare the docker image**
+> Use the podman pull ... ; podman save .. to tar file ; podman load -i to load in disconencted env
+
+Change the image in deploy conf from
+- `docker.io/library/registry:2.7.1`
+to
+- `image-registry.openshift-image-registry.svc.cluster.local:5000/docker-registry/registry:2.7.1`
+
+```
+[lab-user@bastion registry]$ podman pull docker.io/library/registry:2.7.1
+
+[lab-user@bastion registry]$ oc whoami --show-server
+https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
+
+[lab-user@bastion registry]$ oc login -u opentlc-mgr https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
+
+[lab-user@bastion registry]$ podman login -u opentlc-mgr -p $(oc whoami --show-token) default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com
+
+[lab-user@bastion registry]$ podman tag b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+
+[lab-user@bastion registry]$ podman push b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+
+[lab-user@bastion registry]$ oc eidt deploy docker-registry
+
+    spec:
+      containers:
+      - env:
+        - name: REGISTRY_AUTH
+          value: htpasswd
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: Registry Realm
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
+        - name: REGISTRY_OPENSHIFT_SERVER_ADDR
+          value: docker-registry.docker-registry.svc.cluster.local:5000
+        - name: REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED
+          value: "true"
+        image: docker.io/library/registry:2.7.1
+        image: image-registry.openshift-image-registry.svc.cluster.local:5000/docker-registry/registry:2.7.1
 
 ```
