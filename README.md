@@ -185,11 +185,17 @@ docker-registry   docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.c
 Transfer dock image file into disconnectin environemnt
 > Use the podman pull ... ; podman save .. to tar file ; podman load -i to load in disconencted env
 
-
-### Push the image to the internal registry
-
+here, we directly use podman pull
 ```
 [lab-user@bastion registry]$ podman pull docker.io/library/registry:2.7.1
+
+```
+
+
+
+##e Push the image to the internal registry
+
+```
 
 [lab-user@bastion registry]$ oc whoami --show-server
 https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
