@@ -180,13 +180,13 @@ docker-registry   docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.c
 
 ## Prepare the images for disconnection environment
 
-**Prepare the docker image**
+### Prepare the docker image
+
+Transfer dock image file into disconnectin environemnt
 > Use the podman pull ... ; podman save .. to tar file ; podman load -i to load in disconencted env
 
-Change the image in deploy conf from
-- `docker.io/library/registry:2.7.1`
-to
-- `image-registry.openshift-image-registry.svc.cluster.local:5000/docker-registry/registry:2.7.1`
+
+### Push the image to the internal registry
 
 ```
 [lab-user@bastion registry]$ podman pull docker.io/library/registry:2.7.1
@@ -201,7 +201,17 @@ https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
 [lab-user@bastion registry]$ podman tag b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
 
 [lab-user@bastion registry]$ podman push b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+```
 
+
+### Change the image in deploy conf
+**from**
+- `docker.io/library/registry:2.7.1`
+**to**
+- `image-registry.openshift-image-registry.svc.cluster.local:5000/docker-registry/registry:2.7.1`
+
+
+```
 [lab-user@bastion registry]$ oc eidt deploy docker-registry
 
     spec:
