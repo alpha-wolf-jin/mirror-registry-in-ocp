@@ -197,7 +197,7 @@ docker.io/library/registry                                                      
 
 
 
-##e Push the image to the internal registry
+##Push the image to the internal registry
 
 ```
 
