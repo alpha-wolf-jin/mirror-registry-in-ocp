@@ -189,6 +189,10 @@ here, we directly use podman pull
 ```
 [lab-user@bastion registry]$ podman pull docker.io/library/registry:2.7.1
 
+[lab-user@bastion registry]$ podman images
+REPOSITORY                                                                                                         TAG     IMAGE ID       CREATED        SIZE
+docker.io/library/registry                                                                                         2.7.1   b8604a3fe854   5 months ago   26.8 MB
+
 ```
 
 
@@ -205,6 +209,11 @@ https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
 [lab-user@bastion registry]$ podman login -u opentlc-mgr -p $(oc whoami --show-token) default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com
 
 [lab-user@bastion registry]$ podman tag b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+
+[lab-user@bastion registry]$ podman images
+REPOSITORY                                                                                                         TAG     IMAGE ID       CREATED        SIZE
+docker.io/library/registry                                                                                         2.7.1   b8604a3fe854   5 months ago   26.8 MB
+default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry   2.7.1   b8604a3fe854   5 months ago   26.8 MB
 
 [lab-user@bastion registry]$ podman push b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
 ```
