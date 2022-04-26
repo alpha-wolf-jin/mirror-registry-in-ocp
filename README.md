@@ -242,7 +242,6 @@ default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.open
           value: docker-registry.docker-registry.svc.cluster.local:5000
         - name: REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED
           value: "true"
-        image: docker.io/library/registry:2.7.1
         image: image-registry.openshift-image-registry.svc.cluster.local:5000/docker-registry/registry:2.7.1
 ...
 
