@@ -213,7 +213,7 @@ https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
 
 ```
 [lab-user@bastion registry]$ oc eidt deploy docker-registry
-
+...
     spec:
       containers:
       - env:
@@ -229,5 +229,13 @@ https://api.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com:6443
           value: "true"
         image: docker.io/library/registry:2.7.1
         image: image-registry.openshift-image-registry.svc.cluster.local:5000/docker-registry/registry:2.7.1
+...
+
+[lab-user@bastion registry]$ oc get pod
+NAME                               READY   STATUS    RESTARTS   AGE
+docker-registry-6655c7d757-kfqnz   1/1     Running   0          12s
+
+[lab-user@bastion registry]$ curl -u admin:redhat123 https://docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/v2/_catalog
+{"repositories":[]}
 
 ```
