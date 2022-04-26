@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: docker-registry
+    app.kubernetes.io/component: docker-registry
+    app.kubernetes.io/instance: docker-registry
+  name: docker-registry
+  namespace: docker-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: docker-registry
+  template:
+    metadata:
+      labels:
+        deployment: docker-registry
+    spec:
+      containers:
+      - env:
+        - name: REGISTRY_AUTH
+          value: "htpasswd"
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "Registry Realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: "/auth/htpasswd"
+        - name: REGISTRY_OPENSHIFT_SERVER_ADDR
+          value: 'docker-registry.docker-registry.svc.cluster.local:5000'
+        - name: REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED
+          value: 'true'
+        image: docker.io/library/registry:2.7.1
+        imagePullPolicy: Always
+        name: docker-registry
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: "/registry" 
+          name: mypd 
+        - name: auth-vol
+          mountPath: "/auth/htpasswd"
+          readOnly: true
+          subPath: htpasswd
+      volumes:
+      - name: mypd
+        persistentVolumeClaim:
+          claimName: docker-registry-data-01
+      - name: auth-vol
+        secret:
+          secretName: auth-secret
+
