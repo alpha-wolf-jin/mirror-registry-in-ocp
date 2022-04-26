@@ -25,8 +25,10 @@ git add . ; git commit -a -m "update README" ; git push -u origin main
 # Create docker registry
 
 >Note: below hostanme has to changed  accordingly when using differnt names
->        - name: REGISTRY_OPENSHIFT_SERVER_ADDR
->          value: 'docker-registry.docker-registry.svc.cluster.local:5000'
+```
+        - name: REGISTRY_OPENSHIFT_SERVER_ADDR
+          value: 'docker-registry.docker-registry.svc.cluster.local:5000'
+```
 
 ```
 [lab-user@bastion registry]$ oc adm new-project docker-registry
