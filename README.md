@@ -215,7 +215,7 @@ REPOSITORY                                                                      
 docker.io/library/registry                                                                                         2.7.1   b8604a3fe854   5 months ago   26.8 MB
 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry   2.7.1   b8604a3fe854   5 months ago   26.8 MB
 
-[lab-user@bastion registry]$ podman push b8604a3fe854 default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
+[lab-user@bastion registry]$ podman push default-route-openshift-image-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/docker-registry/registry:2.7.1
 ```
 
 
