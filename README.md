@@ -116,8 +116,26 @@ spec:
 
 [lab-user@bastion registry]$ oc apply -f deploy-docker-registry.yaml  
 
-[lab-user@bastion registry]$ oc get pod
-NAME                               READY   STATUS    RESTARTS   AGE
-docker-registry-66545c65f5-2fkmn   1/1     Running   0          3m14s
+[lab-user@bastion registry]$ oc get all
+NAME                                   READY   STATUS    RESTARTS   AGE
+pod/docker-registry-66545c65f5-2fkmn   1/1     Running   0          7m20s
+
+NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/docker-registry   1/1     1            1           7m20s
+
+NAME                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/docker-registry-66545c65f5   1         1         1       7m20s
+
+[lab-user@bastion registry]$ oc expose deploy docker-registry
+
+[lab-user@bastion registry]$ oc create route edge --service=docker-registry
+
+[lab-user@bastion registry]$ oc get route
+NAME              HOST/PORT                                                                          PATH   SERVICES          PORT    TERMINATION   WILDCARD
+docker-registry   docker-registry-docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com          docker-registry   <all>   edge          None
+[lab-user@bastion registry]$ 
+
+[lab-user@bastion registry]$ curl -u admin:redhat123 https://docker-registry-docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/v2/_catalog 
+{"repositories":[]}
 
 ```
