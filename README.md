@@ -139,3 +139,21 @@ docker-registry   docker-registry-docker-registry.apps.cluster-n2p5z.n2p5z.sandb
 {"repositories":[]}
 
 ```
+
+**Change to short name**
+
+```
+[lab-user@bastion registry]$ oc edit route docker-registry
+. . .
+spec:
+  host: docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com
+. . .
+
+[lab-user@bastion registry]$ oc get route
+NAME              HOST/PORT                                                          PATH   SERVICES          PORT    TERMINATION   WILDCARD
+docker-registry   docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com          docker-registry   <all>   edge          None
+
+[lab-user@bastion registry]$ curl -u admin:redhat123 https://docker-registry.apps.cluster-n2p5z.n2p5z.sandbox1445.opentlc.com/v2/_catalog
+{"repositories":[]}
+
+```
