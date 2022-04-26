@@ -2,7 +2,7 @@
 
 In the disconnection environemnt, we need one mirroring registry. 
 
-But we cannot found extra VM to create mirroring registry and port 5000 in bastion is blocked. 
+But we cannot found extra VM with enough disk space to create mirroring registry and port 5000 in bastion is blocked in lab environment
 
 Here, we create one serice in OCP for mirroring registry.
 
